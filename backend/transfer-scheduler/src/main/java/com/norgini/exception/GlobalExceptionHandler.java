@@ -23,9 +23,9 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ApiError handleValidationException(MethodArgumentNotValidException ex) {
         
-        List<ApiError.FieldError> fieldErrors = ex.getBindingResult()
+        List<ApiError.FieldMessage> fieldMessages = ex.getBindingResult()
         		.getFieldErrors().stream()
-                .map(error -> ApiError.FieldError.builder()
+                .map(error -> ApiError.FieldMessage.builder()
                         .name(error.getField())
                         .message(error.getDefaultMessage())
                         .build())
@@ -38,10 +38,10 @@ public class GlobalExceptionHandler {
                 .map(error -> error.getDefaultMessage())
                 .orElse("Erro de validação nos campos preenchidos.");
 
-        return buildApiError(HttpStatus.BAD_REQUEST, principalMessage, fieldErrors);
+        return buildApiError(HttpStatus.BAD_REQUEST, principalMessage, fieldMessages);
     }
 
-    private ApiError buildApiError(HttpStatus status, String message, List<ApiError.FieldError> fields) {
+    private ApiError buildApiError(HttpStatus status, String message, List<ApiError.FieldMessage> fields) {
         return ApiError.builder()
                 .timestamp(LocalDateTime.now())
                 .status(status.value())

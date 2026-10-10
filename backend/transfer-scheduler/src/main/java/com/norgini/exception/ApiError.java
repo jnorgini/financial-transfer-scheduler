@@ -17,11 +17,11 @@ public class ApiError {
 	private Integer status;
 	private String error;
 	private String message;
-	private List<FieldError> fields;
+	private List<FieldMessage> fields;
 
 	@Data
 	@Builder
-	public static class FieldError {
+	public static class FieldMessage {
 		private String name;
 		private String message;
 	}
