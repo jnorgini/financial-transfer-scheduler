@@ -1,7 +1,6 @@
 package com.norgini.service;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
+import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
@@ -25,6 +24,7 @@ public class TransferService {
 	}
 
 	public Transfer scheduleTransfer(Transfer transfer) {
+		transfer.setScheduledDate(LocalDate.now());
 
 		long daysBetween = ChronoUnit.DAYS.between(transfer.getScheduledDate(), transfer.getTransferDate());
 
@@ -34,14 +34,7 @@ public class TransferService {
 						+ daysBetween
 						+ " dias de antecedência. O limite máximo permitido é de 50 dias."));
 
-		BigDecimal fixedFee = rule.getFixedFee();
-		BigDecimal percentageFee = transfer.getAmount()
-				.multiply(rule.getPercentage())
-				.divide(new BigDecimal("100"), 2,
-				RoundingMode.HALF_UP);
-
-		BigDecimal totalFee = fixedFee.add(percentageFee);
-		transfer.setFee(totalFee);
+		transfer.setFee(rule.calculateFee(transfer.getAmount()));
 
 		return repository.save(transfer);
 	}
