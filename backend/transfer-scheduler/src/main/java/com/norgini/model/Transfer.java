@@ -25,6 +25,6 @@ public class Transfer {
 	private BigDecimal amount;
 	private BigDecimal fee;
 	private LocalDate transferDate;
-	private LocalDate scheduledDate = LocalDate.now();
+	private LocalDate scheduledDate;
 
 }
