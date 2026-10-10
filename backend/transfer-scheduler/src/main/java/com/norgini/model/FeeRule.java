@@ -1,6 +1,7 @@
 package com.norgini.model;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -36,6 +37,13 @@ public enum FeeRule {
 		return Arrays.stream(values())
 				.filter(rule -> days >= rule.minDays && days <= rule.maxDays)
 				.findFirst();
+	}
+	
+	public BigDecimal calculateFee(BigDecimal amount) {
+		BigDecimal percentageFee = amount.multiply(this.percentage)
+				.divide(new BigDecimal("100"), 4, RoundingMode.HALF_UP);
+
+		return this.fixedFee.add(percentageFee).setScale(2, RoundingMode.HALF_UP);
 	}
 	
 }
