@@ -55,7 +55,7 @@ A taxa é calculada com base na quantidade de dias entre a **data de agendamento
 Cálculos monetários utilizam `BigDecimal` com `RoundingMode.HALF_UP` para mitigar os riscos de imprecisões numéricas nativas de tipos de ponto flutuante (`double`/`float`).
 
 ### 2. Motor de Regras Desacoplado (`FeeRule`)
-As faixas de dias e alíquotas foram isoladas no Enum `FeeRule`. O método de busca varre os intervalos aplicando o Princípio de Responsabilidade Única (SRP) e eliminando estruturas complexas de `if-else`.
+As faixas de dias, alíquotas e o cálculo da taxa foram isolados no Enum `FeeRule`. O método varre os intervalos aplicando o Princípio de Responsabilidade Única (SRP) e eliminando estruturas complexas de `if-else`.
 
 ### 3. Tratamento Centralizado de Exceções
 Janelas acima de 50 dias ou retroativas disparam uma exceção customizada (`BusinessException`), interceptada globalmente no back-end para retornar uma mensagem amigável e imediata ao usuário.
