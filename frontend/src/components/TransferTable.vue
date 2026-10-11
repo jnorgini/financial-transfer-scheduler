@@ -49,34 +49,11 @@
 </template>
 
 <script setup>
-import { ref, onMounted, defineExpose } from 'vue'
-import transferService from '../services/transferService'
+import { onMounted, defineExpose } from 'vue'
+import { useTransfers } from '../composables/useTransfers'
+import { formatCurrency, formatDate } from '../utils/formatters'
 
-const transfers = ref([])
-const loading = ref(false)
-
-const fetchTransfers = async () => {
-    loading.value = true
-    try {
-        const response = await transferService.getStatement()
-        transfers.value = response.data
-    } catch (error) {
-        console.error('Erro ao buscar o extrato:', error)
-    } finally {
-        loading.value = false
-    }
-}
-
-const formatCurrency = (value) => {
-    if (value === null || value === undefined) return 'R\$ 0,00'
-    return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value)
-}
-
-const formatDate = (dateString) => {
-    if (!dateString) return '-'
-    const [year, month, day] = dateString.split('-')
-    return `${day}/${month}/${year}`
-}
+const { transfers, loading, fetchTransfers } = useTransfers()
 
 onMounted(() => {
     fetchTransfers()
