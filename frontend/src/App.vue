@@ -1,13 +1,7 @@
 <template>
   <div class="d-flex flex-column min-vh-100">
-    <nav class="navbar navbar-dark bg-dark shadow-sm mb-4">
-      <div class="container">
-        <span class="navbar-brand mb-0 h1 d-flex align-items-center">
-          <i class="bi bi-bank me-2"></i> Sistema de Agendamento Financeiro
-        </span>
-        <span class="badge bg-secondary font-monospace">v1.0.0</span>
-      </div>
-    </nav>
+
+    <TheNavbar />
 
     <div class="container flex-grow-1">
       <div class="row">
@@ -21,16 +15,15 @@
       </div>
     </div>
 
-    <footer class="bg-light text-center text-muted py-3 mt-auto border-top">
-      <div class="container">
-        <small>&copy; 2026 Norgini Soluções Financeiras</small>
-      </div>
-    </footer>
+    <TheFooter />
+
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
+import TheNavbar from './components/TheNavbar.vue'
+import TheFooter from './components/TheFooter.vue'
 import TransferForm from './components/TransferForm.vue'
 import TransferTable from './components/TransferTable.vue'
 
