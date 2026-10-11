@@ -32,42 +32,31 @@ A taxa é calculada com base na quantidade de dias entre a **data de agendamento
 
 ---
 
-## 🛠️ Tecnologias, Versões e Ferramentas Utilizadas
+## 🛠️ Tecnologias e Ferramentas
 
 ### Back-end (API REST)
-- **Java 11** (Versão mandatória especificada nos requisitos)
-- **Spring Boot 2.7.x** (Ecossistema estável para o desenvolvimento corporativo)
-- **Spring Data JPA** (Abstração e agilidade na camada de persistência)
-- **Banco de Dados H2** (Banco de dados em memória solicitado no teste)
-- **ModelMapper** / **Lombok** (Mapeamento performático e eliminação de boilerplate)
-- **Bean Validation** (Validação rigorosa de formato e dados na entrada da API)
+* **Java 11:** Versão mandatória especificada nos requisitos.
+* **Spring Boot 2.7.x:** Ecossistema estável para o desenvolvimento corporativo.
+* **Spring Data JPA:** Abstração e agilidade na camada de persistência.
+* **Banco de Dados H2:** Banco de dados em memória solicitado no teste.
+* **ModelMapper / Lombok:** Mapeamento performático e eliminação de boilerplate.
+* **Bean Validation:** Validação rigorosa de formato e dados na entrada da API.
 
 ### Front-end (Interface Gráfica)
-- **Vue.js 3** (Abordagem moderna com `<script setup>` e Composition API)
-- **Bootstrap 5** (Layout responsivo e interface limpa)
-- **Axios** (Cliente HTTP para comunicação assíncrona)
+* **Vue.js 3:** Abordagem moderna com `<script setup>` e Composition API.
+* **Bootstrap 5:** Layout responsivo e interface limpa.
+* **Axios:** Cliente HTTP para comunicação assíncrona.
 
 ---
 
 ## 📐 Decisões Arquiteturais e Boas Práticas
 
-### 1. Precisão Financeira com `BigDecimal`
-Cálculos monetários utilizam `BigDecimal` com `RoundingMode.HALF_UP` para mitigar os riscos de imprecisões numéricas nativas de tipos de ponto flutuante (`double`/`float`).
-
-### 2. Motor de Regras Desacoplado (`FeeRule`)
-As faixas de dias, alíquotas e o cálculo da taxa foram isolados no Enum `FeeRule`. O método varre os intervalos aplicando o Princípio de Responsabilidade Única (SRP) e eliminando estruturas complexas de `if-else`.
-
-### 3. Tratamento Centralizado de Exceções
-Janelas acima de 50 dias ou retroativas disparam uma exceção customizada (`BusinessException`), interceptada globalmente no back-end para retornar uma mensagem amigável e imediata ao usuário.
-
-### 4. Proteção de Domínio com DTOs
-A entidade de banco de dados fica protegida contra exposição direta. As entradas são validadas na camada de controller via `TransferRequest` (com máscara `@Pattern` de 10 dígitos) e mapeadas para `TransferResponse`.
-
-### 5. CORS Centralizado
-O compartilhamento de recursos de origens cruzadas foi isolado na classe `CorsConfig`, permitindo o tráfego seguro e global de dados a partir do servidor do Vue.js sem repetição de anotações nos controllers.
-
-### 6. Comunicação Reativa no Front-end
-O formulário sanitiza caracteres não numéricos em tempo real (`\D`). O gerenciamento de estados usa comunicação por eventos nativos (`transfer-created`) para atualizar o extrato reativamente sem recarregar a página.
+* **Precisão Financeira:** Uso de `BigDecimal` com `RoundingMode.HALF_UP` para garantir a integridade dos cálculos monetários.
+* **Regras Desacopladas:** Regras de negócio isoladas no Enum `FeeRule`, aplicando o princípio de responsabilidade única (SRP).
+* **Exceções Centralizadas:** Validações de data disparam uma exceção customizada (`BusinessException`) tratada globalmente no back-end.
+* **Proteção com DTOs:** Uso de `TransferRequest`/`Response` com validação `@Pattern` para proteger as entidades de banco de dados.
+* **CORS Centralizado:** Configuração isolada na classe `CorsConfig` para comunicação segura com o Vue.js sem código duplicado.
+* **Front-end Reativo:** Sanitização de dados em tempo real e atualização de estado via eventos nativos sem recarregar a página.
 
 ---
 
@@ -75,56 +64,37 @@ O formulário sanitiza caracteres não numéricos em tempo real (`\D`). O gerenc
 
 A aplicação utiliza **JUnit 5**, **Mockito** e **MockMvc** para garantir a qualidade dos fluxos:
 
-- **`TransferServiceTest`:** Valida todas as faixas de cálculo de taxas e o bloqueio de prazos inválidos.
-- **`TransferControllerTest`:** Valida o comportamento dos endpoints, payloads e respostas HTTP.
+* **`TransferServiceTest`:** Valida todas as faixas de cálculo de taxas e o bloqueio de prazos inválidos.
+* **`TransferControllerTest`:** Valida o comportamento dos endpoints, payloads e respostas HTTP.
 
 Para rodar os testes, execute na raiz do back-end:
 
-**No Git Bash, VS Code, Linux ou macOS:**
-```bash
-./mvnw test
-```
-
-**No Prompt de Comando (CMD) do Windows:**
-```cmd
-mvnw.cmd test
-```
+* **No Git Bash, VS Code, Linux ou macOS:** `./mvnw test`
+* **No Prompt de Comando (CMD) do Windows:** `mvnw.cmd test`
 
 ---
 
-## 🚀 Instruções para Subida do Projeto
+## 🚀 Como Executar o Projeto
 
 ### Pré-requisitos Obrigatórios
-- **JDK 11** instalado na máquina.
-- **Node.js** instalado (Versão 16 ou superior).
-
----
+* **JDK 11** instalado na máquina.
+* **Node.js** instalado (Versão 16 ou superior).
 
 ### ⚙️ Executando o Back-end (Spring Boot)
-
 1. Importe o projeto do backend na sua IDE de preferência como um **Existing Maven Project**.
 2. Execute a classe principal do projeto como um **Spring Boot App**.
 3. A API iniciará na porta padrão `8080`.
 
 > 💡 **Acesso ao Banco de Dados (H2 Console):**
 > Visualizável em `http://localhost:8080/h2-console` utilizando as credenciais:
-> - **JDBC URL:** `jdbc:h2:mem:transfer`
-> - **User Name:** `sa`
-> - **Password:** _(deixe em branco)_
-
----
+> * **JDBC URL:** `jdbc:h2:mem:transfer`
+> * **User Name:** `sa`
+> * **Password:** _(deixe em branco)_
 
 ### 💻 Executando o Front-end (Vue.js)
-
 1. Abra o terminal na pasta `frontend` do projeto.
-2. Instale as dependências locais executando:
-   ```bash
-   npm install
-   ```
-3. Inicie o servidor de desenvolvimento rodando:
-   ```bash
-   npm run dev
-   ```
+2. Instale as dependências locais executando: `npm install`
+3. Inicie o servidor de desenvolvimento rodando: `npm run dev`
 4. Abra o link gerado no seu navegador (geralmente `http://localhost:5173`) para utilizar o sistema!
 
 ---
