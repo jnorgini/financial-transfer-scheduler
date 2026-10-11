@@ -26,7 +26,9 @@ public class TransferService {
 	public Transfer scheduleTransfer(Transfer transfer) {
 		transfer.setScheduledDate(LocalDate.now());
 
-		long daysBetween = ChronoUnit.DAYS.between(transfer.getScheduledDate(), transfer.getTransferDate());
+		long daysBetween = ChronoUnit.DAYS.between(
+				transfer.getScheduledDate(), 
+				transfer.getTransferDate());
 
 		FeeRule rule = FeeRule.findRule(daysBetween)
 				.orElseThrow(() -> new BusinessException(

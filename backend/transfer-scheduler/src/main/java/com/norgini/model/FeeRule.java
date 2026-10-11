@@ -40,7 +40,8 @@ public enum FeeRule {
 	}
 	
 	public BigDecimal calculateFee(BigDecimal amount) {
-		BigDecimal percentageFee = amount.multiply(this.percentage)
+		BigDecimal percentageFee = amount
+				.multiply(this.percentage)
 				.divide(new BigDecimal("100"), 4, RoundingMode.HALF_UP);
 
 		return this.fixedFee.add(percentageFee).setScale(2, RoundingMode.HALF_UP);
