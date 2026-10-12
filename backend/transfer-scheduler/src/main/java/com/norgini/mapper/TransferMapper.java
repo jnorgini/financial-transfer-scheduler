@@ -1,35 +1,24 @@
 package com.norgini.mapper;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
-import org.modelmapper.ModelMapper;
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 import com.norgini.dto.TransferRequest;
 import com.norgini.dto.TransferResponse;
 import com.norgini.model.Transfer;
 
-import lombok.RequiredArgsConstructor;
+@Mapper(componentModel = "spring")
+public interface TransferMapper {
 
-@Component
-@RequiredArgsConstructor
-public class TransferMapper {
+	@Mapping(target = "id", ignore = true)
+	@Mapping(target = "fee", ignore = true)
+	@Mapping(target = "scheduledDate", ignore = true)
+	Transfer toEntity(TransferRequest request);
 
-	private final ModelMapper mapper;
+	TransferResponse toResponse(Transfer transfer);
 
-	public Transfer toEntity(TransferRequest request) {
-		return mapper.map(request, Transfer.class);
-	}
-
-	public TransferResponse toResponse(Transfer transfer) {
-		return mapper.map(transfer, TransferResponse.class);
-	}
-
-	public List<TransferResponse> toResponseList(List<Transfer> transfers) {
-		return transfers.stream()
-				.map(this::toResponse)
-				.collect(Collectors.toList());
-	}
+	List<TransferResponse> toResponseList(List<Transfer> transfers);
 
 }
