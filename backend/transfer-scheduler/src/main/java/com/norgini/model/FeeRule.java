@@ -17,6 +17,7 @@ public enum FeeRule {
 	private final long maxDays;
 	private final BigDecimal fixedFee;
 	private final BigDecimal percentage;
+	private static final BigDecimal ONE_HUNDRED = new BigDecimal("100");
 
 	FeeRule(long minDays, long maxDays, BigDecimal fixedFee, BigDecimal percentage) {
 		this.minDays = minDays;
@@ -42,7 +43,7 @@ public enum FeeRule {
 	public BigDecimal calculateFee(BigDecimal amount) {
 		BigDecimal percentageFee = amount
 				.multiply(this.percentage)
-				.divide(new BigDecimal("100"), 4, RoundingMode.HALF_UP);
+				.divide(ONE_HUNDRED, 4, RoundingMode.HALF_UP);
 
 		return this.fixedFee.add(percentageFee).setScale(2, RoundingMode.HALF_UP);
 	}
