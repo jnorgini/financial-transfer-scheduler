@@ -39,7 +39,7 @@ A taxa é calculada com base na quantidade de dias entre a **data de agendamento
 * **Spring Boot 2.7.x:** Ecossistema estável para o desenvolvimento corporativo.
 * **Spring Data JPA:** Abstração e agilidade na camada de persistência.
 * **Banco de Dados H2:** Banco de dados em memória solicitado no teste.
-* **ModelMapper / Lombok:** Mapeamento performático e eliminação de boilerplate.
+* **MapStruct / Lombok:** Mapeamento performático e eliminação de boilerplate.
 * **Bean Validation:** Validação rigorosa de formato e dados na entrada da API.
 
 ### Front-end (Interface Gráfica)
